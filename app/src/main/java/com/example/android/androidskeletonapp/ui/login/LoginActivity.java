@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar loadingProgressBar;
 
     public static Intent getLoginActivityIntent(Context context) {
-        return new Intent(context,LoginActivity.class);
+        return new Intent(context, LoginActivity.class);
     }
 
     @Override
@@ -80,9 +80,9 @@ public class LoginActivity extends AppCompatActivity {
             }
             if (loginResult.getSuccess() != null) {
                 if (Sdk.d2().programModule().programs().blockingCount() > 0) {
-                    ActivityStarter.startActivity(this, ProgramsActivity.getProgramActivityIntent(this),true);
+                    ActivityStarter.startActivity(this, ProgramsActivity.getProgramActivityIntent(this), true);
                 } else {
-                    ActivityStarter.startActivity(this, MainActivity.getMainActivityIntent(this),true);
+                    ActivityStarter.startActivity(this, MainActivity.getMainActivityIntent(this), true);
                 }
             }
             setResult(Activity.RESULT_OK);
@@ -140,7 +140,8 @@ public class LoginActivity extends AppCompatActivity {
             tips = "Show a toast to welcome the user"
     )
     private void showUserInfo(User user) {
-        // TODO 2
+        String welcomeMessage = "Welcome " + user.displayName();
+        Toast.makeText(this, welcomeMessage, Toast.LENGTH_LONG).show();
     }
 
     @Override
