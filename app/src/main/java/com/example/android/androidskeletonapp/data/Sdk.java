@@ -42,7 +42,14 @@ public class Sdk {
                     "set the networkInterceptors using the getNetworkInterceptors(context) method."
     )
     public static D2Configuration getD2Configuration(Context context) {
-        // TODO
-        return null;
+        return D2Configuration.builder()
+                .context(context)
+                .appName("dev05")
+                .networkInterceptors(getNetworkInterceptors(context))
+                .appVersion("1.0.0")
+                .connectTimeoutInSeconds(2)
+                .readTimeoutInSeconds(2)
+                .writeTimeoutInSeconds(2)
+                .build();
     }
 }
