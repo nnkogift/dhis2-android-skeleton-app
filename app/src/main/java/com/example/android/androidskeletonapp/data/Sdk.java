@@ -31,6 +31,7 @@ public class Sdk {
         return networkInterceptors;
     }
 
+    static int timeout = 2 * 60;
     @Exercise(
             exerciseNumber = "ex01",
             title = "SDK Configuration",
@@ -41,15 +42,16 @@ public class Sdk {
                     "set timeouts to 2 minutes (connectTimeoutInSeconds, readTimeoutInSeconds and writeTimeoutInSeconds) " +
                     "set the networkInterceptors using the getNetworkInterceptors(context) method."
     )
+
     public static D2Configuration getD2Configuration(Context context) {
         return D2Configuration.builder()
                 .context(context)
                 .appName("dev05")
                 .networkInterceptors(getNetworkInterceptors(context))
                 .appVersion("1.0.0")
-                .connectTimeoutInSeconds(2)
-                .readTimeoutInSeconds(2)
-                .writeTimeoutInSeconds(2)
+                .connectTimeoutInSeconds(timeout)
+                .readTimeoutInSeconds(timeout)
+                .writeTimeoutInSeconds(timeout)
                 .build();
     }
 }
