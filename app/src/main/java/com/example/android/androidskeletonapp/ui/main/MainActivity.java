@@ -241,10 +241,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void downloadData() {
         compositeDisposable.add(
                 Observable.merge(
-                        downloadTrackedEntityInstances(),
-                        downloadSingleEvents(),
-                        downloadAggregatedData()
-                )
+                                downloadTrackedEntityInstances(),
+                                downloadSingleEvents(),
+                                downloadAggregatedData()
+                        )
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnComplete(() -> {
@@ -255,44 +255,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .subscribe());
     }
 
-    @Exercise(
-            exerciseNumber = "ex03-sync-and-list",
-            title = "Metadata synchronization",
-            tips = "Call the download method for metadata."
-    )
     private Observable<D2Progress> downloadMetadata() {
-        // TODO Download metadata
-        return Observable.empty();
+        return Sdk.d2().metadataModule().download();
     }
-
-    @Exercise(
-            exerciseNumber = "ex03-sync-and-list",
-            title = "Data synchronization",
-            tips = "Call the download method for trackedEntityInstances. Choose a global limit of 10."
-    )
+    int pageSize = 10;
     private Observable<D2Progress> downloadTrackedEntityInstances() {
-        // TODO Download tracked entity instances
-        return Observable.empty();
+        return Sdk.d2().trackedEntityModule().trackedEntityInstanceDownloader().limit(pageSize).download();
     }
 
-    @Exercise(
-            exerciseNumber = "ex03-sync-and-list",
-            title = "Data synchronization",
-            tips = "Call the download method for single events. Choose a global limit of 10."
-    )
     private Observable<D2Progress> downloadSingleEvents() {
-        // TODO Download single events
-        return Observable.empty();
+        return Sdk.d2().eventModule().eventDownloader().limit(pageSize).download();
     }
 
-    @Exercise(
-            exerciseNumber = "ex03-sync-and-list",
-            title = "Data synchronization",
-            tips = "Call the download method for aggregated data."
-    )
     private Observable<D2Progress> downloadAggregatedData() {
-        // TODO Download aggregated data
-        return Observable.empty();
+        return Sdk.d2().aggregatedModule().data().download();
     }
 
     private void uploadData() {
