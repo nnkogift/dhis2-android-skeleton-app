@@ -1,5 +1,7 @@
 package com.example.android.androidskeletonapp.data.service.forms;
 
+import static android.text.TextUtils.isEmpty;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -20,7 +22,6 @@ import org.hisp.dhis.android.core.trackedentity.TrackedEntityAttributeValue;
 import org.hisp.dhis.android.core.trackedentity.TrackedEntityDataValue;
 import org.hisp.dhis.rules.RuleEngine;
 import org.hisp.dhis.rules.RuleEngineContext;
-import org.hisp.dhis.rules.RuleExpressionEvaluator;
 import org.hisp.dhis.rules.models.Rule;
 import org.hisp.dhis.rules.models.RuleAction;
 import org.hisp.dhis.rules.models.RuleActionHideField;
@@ -42,11 +43,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
 import io.reactivex.Flowable;
-
-import static android.text.TextUtils.isEmpty;
 
 public class RuleEngineService {
 
@@ -76,17 +73,10 @@ public class RuleEngineService {
                 getRuleVariables(),
                 getRules(),
                 getEvents(enrollmentUid),
-                (ruleVariables, rules, events) -> RuleEngineContext.builder(new RuleExpressionEvaluator() {
-                    @Nonnull
-                    @Override
-                    public String evaluate(@Nonnull String expression) {
-                        return jexlEngine.createExpression(expression).evaluate(null).toString();
-                    }
-                })
+                (ruleVariables, rules, events) -> RuleEngineContext.builder()
                         .ruleVariables(ruleVariables)
                         .rules(rules)
                         .supplementaryData(new HashMap<>())
-                        .calculatedValueMap(new HashMap<>())
                         .constantsValue(new HashMap<>())
                         .build().toEngineBuilder()
                         .triggerEnvironment(TriggerEnvironment.ANDROIDCLIENT)
@@ -127,17 +117,10 @@ public class RuleEngineService {
                             List<Rule> rules,
                             List<RuleEvent> events,
                             RuleEnrollment enrollment) {
-        RuleEngine.Builder builder = RuleEngineContext.builder(new RuleExpressionEvaluator() {
-            @Nonnull
-            @Override
-            public String evaluate(@Nonnull String expression) {
-                return jexlEngine.createExpression(expression).evaluate(null).toString();
-            }
-        })
+        RuleEngine.Builder builder = RuleEngineContext.builder()
                 .ruleVariables(ruleVariables)
                 .rules(rules)
                 .supplementaryData(new HashMap<>())
-                .calculatedValueMap(new HashMap<>())
                 .constantsValue(new HashMap<>())
                 .build().toEngineBuilder()
                 .triggerEnvironment(TriggerEnvironment.ANDROIDCLIENT)
@@ -244,7 +227,8 @@ public class RuleEngineService {
                 event.organisationUnit(),
                 code,
                 ruleDataValues,
-                stageName);
+                stageName,
+                event.completedDate());
     }
 
     private List<RuleDataValue> transformToRuleDataValue(Event event, List<TrackedEntityDataValue> eventDataValues) {
@@ -276,7 +260,7 @@ public class RuleEngineService {
             rules.add(
                     Rule.create(rule.programStage() != null ?
                             rule.programStage().uid() :
-                            null, rule.priority(), rule.condition(), ruleActions, rule.name())
+                            null, rule.priority(), rule.condition(), ruleActions, rule.name(), rule.uid())
             );
         }
         return rules;

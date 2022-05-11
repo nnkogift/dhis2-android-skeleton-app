@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/prompt_server_url"
             android:inputType="textUri"
-            android:text="@string/auto_fill_url" />
+            android:text="@string/auto_fill_url"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/prompt_username"
             android:inputType="text"
-            android:text="@string/auto_fill_username" />
+            android:text="@string/auto_fill_username"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,7 +75,7 @@
             android:imeActionLabel="@string/action_sign_in_short"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
-            android:text="@string/auto_fill_password" />
+            android:text="@string/auto_fill_password"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
