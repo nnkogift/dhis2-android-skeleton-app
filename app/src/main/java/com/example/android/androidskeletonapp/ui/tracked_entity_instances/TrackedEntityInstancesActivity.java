@@ -84,8 +84,12 @@ public class TrackedEntityInstancesActivity extends ListActivity {
                 .one().blockingGet().uid();
         String trackedEntityTypeUid = program.trackedEntityType().uid();
 
-        // TODO Create a new trackedEntityInstance and return a Single with the trackedEntityInstance uid
-        return Single.error(new RuntimeException("Not implemented"));
+        return Sdk.d2().trackedEntityModule().trackedEntityInstances().add(
+                TrackedEntityInstanceCreateProjection.builder()
+                        .trackedEntityType(trackedEntityTypeUid)
+                        .organisationUnit(organisationUnitUid)
+                        .build()
+        );
     }
 
     private Intent getEnrollmentFormActivityIntent(String teiUid) {

@@ -29,7 +29,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.example.android.androidskeletonapp.data.service.AttributeHelper.MALARIA_CASE_TET_UID;
 
 public class CodeExecutorActivity extends AppCompatActivity {
 

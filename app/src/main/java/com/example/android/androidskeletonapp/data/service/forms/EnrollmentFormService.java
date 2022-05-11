@@ -2,6 +2,7 @@ package com.example.android.androidskeletonapp.data.service.forms;
 
 import android.text.TextUtils;
 
+import com.example.android.androidskeletonapp.data.Sdk;
 import com.example.android.androidskeletonapp.data.utils.Exercise;
 
 import org.hisp.dhis.android.core.D2;
@@ -45,14 +46,18 @@ public class EnrollmentFormService {
     public boolean init(D2 d2, String teiUid, String programUid, String ouUid) {
         this.d2 = d2;
         try {
-            // TODO Create a new enrollment and save the enrollment uid in the class variable 'enrollmentUid'
             EnrollmentCreateProjection enrollmentCreateProjection = null;
+            enrollmentCreateProjection = EnrollmentCreateProjection.builder()
+                    .program(programUid)
+                    .trackedEntityInstance(teiUid)
+                    .organisationUnit(ouUid).build();
             String enrollmentUid = d2.enrollmentModule()
                     .enrollments()
                     .blockingAdd(enrollmentCreateProjection);
 
             enrollmentRepository = d2.enrollmentModule().enrollments().uid(enrollmentUid);
-            // TODO Set enrollmentDate and incidentDate. Tip: use helper method 'getNowWithoutTime()'
+            enrollmentRepository.setEnrollmentDate(getNowWithoutTime());
+            enrollmentRepository.setIncidentDate(getNowWithoutTime());
 
             return true;
         } catch (D2Error d2Error) {
@@ -69,9 +74,9 @@ public class EnrollmentFormService {
             );
         else
             return Flowable.fromCallable(() ->
-                    d2.programModule().programTrackedEntityAttributes()
-                            .byProgram().eq(enrollmentRepository.blockingGet().program()).blockingGet()
-            )
+                            d2.programModule().programTrackedEntityAttributes()
+                                    .byProgram().eq(enrollmentRepository.blockingGet().program()).blockingGet()
+                    )
                     .flatMapIterable(programTrackedEntityAttributes -> programTrackedEntityAttributes)
                     .map(programAttribute -> {
 

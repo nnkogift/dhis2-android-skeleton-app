@@ -42,6 +42,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -144,7 +145,11 @@ public class EnrollmentFormActivity extends AppCompatActivity {
             String currentValue = valueRepository.blockingExists() ?
                     valueRepository.blockingGet().value() : "";
 
-            // TODO Save the value if not empty; otherwise delete it.
+            if(!Objects.equals(currentValue, "")){
+
+            }else{
+
+            }
         };
     }
 
