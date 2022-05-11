@@ -137,7 +137,14 @@ public class CodeExecutorActivity extends AppCompatActivity {
 
             for (DataSetElement dataSetElement : Objects.requireNonNull(dataSet.dataSetElements())) {
                 DataElement dataElement = Sdk.d2().dataElementModule().dataElements().uid(dataSetElement.dataElement().uid()).blockingGet();
-                String categoryComboUid = dataElement.categoryComboUid();
+                String categoryComboUid;
+
+                if (dataSetElement.categoryCombo() != null) {
+                    categoryComboUid = dataSetElement.categoryCombo().uid();
+                } else {
+                    categoryComboUid = dataElement.categoryComboUid();
+                }
+
                 List<CategoryOptionCombo> categoryOptionCombos = Sdk.d2()
                         .categoryModule()
                         .categoryOptionCombos()
@@ -152,7 +159,7 @@ public class CodeExecutorActivity extends AppCompatActivity {
                             .value(period.periodId(), organisationUnit.uid(), dataElement.uid(), optionCombo.uid(), dataSetOptionCombo.uid());
 
                     try {
-                        dataValueObjectRepository.blockingSet(String.valueOf((Math.random() * 20)));
+                        dataValueObjectRepository.blockingSet(String.valueOf((Math.random() * 100)));
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
